@@ -26,12 +26,7 @@ node {
   
   stage 'tag in git'
   /**
-  withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '146ff225-d9c5-4466-9ae0-3ff4c646ff30', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) 
-  {
-    sh("git tag -a ${env.BUILD_NUMBER}  -m 'Jenkins'")
-    sh('git push https://"${GIT_USERNAME}":"${GIT_PASSWORD}"@github.com/snyamars/spring-petclinic.git --tags')
-  }
-  //commented on Nov 19 2017
+ 
   **/
 
   /**/
@@ -40,7 +35,7 @@ node {
       withCredentials([[$class: "UsernamePasswordMultiBinding", usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS', credentialsId: 'dockerId']]) {
       sh 'docker login --username $DOCKERHUB_USER --password $DOCKERHUB_PASS'
     }
-    def serverImage = docker.build('snyamars007/petclinic')
+    def serverImage = docker.build('snyamars007/micro_gateway')
     serverImage.push('latest')
     sh 'docker logout'
    }
@@ -48,12 +43,12 @@ node {
    
    stage 'notifyKubernetes'
      try{
-      sh "kubectl delete deployment spring-petclinic-test1"
+      sh "kubectl delete deployment micro_gateway"
    }catch(e){
       println("no prior deployment exists")
    }
    sh "sleep 3s"
-   sh "kubectl run --image=snyamars007/petclinic:latest spring-petclinic-test1  --port=9966"
-   sh "kubectl expose deployment spring-petclinic-test1 --type=NodePort "
+   sh "kubectl run --image=snyamars007/micro_gateway:latest micro_gateway  --port=9966"
+   sh "kubectl expose deployment micro_gateway --type=NodePort "
 
 }//end of node
