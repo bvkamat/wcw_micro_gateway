@@ -48,7 +48,7 @@ node {
       println("no prior deployment exists")
    }
    sh "sleep 3s"
-   sh "kubectl run --image=snyamars007/micro_gateway:latest micro_gateway  --port=3306"
-   sh "kubectl expose deployment micro_gateway --type=NodePort "
+   sh "kubectl run --image=snyamars007/micro_gateway:latest microgateway  --port=3306"
+   sh "kubectl expose deployment microgateway --type=NodePort "
 
 }//end of node
