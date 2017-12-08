@@ -29,7 +29,7 @@ node {
  
   **/
 
-  /**/
+  /**
    stage ('docker build'){
 
       withCredentials([[$class: "UsernamePasswordMultiBinding", usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS', credentialsId: 'dockerId']]) {
@@ -39,7 +39,7 @@ node {
     serverImage.push('latest')
     sh 'docker logout'
    }
-  /**/
+  **/
    
    stage 'notifyKubernetes'
      try{
